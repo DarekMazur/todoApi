@@ -1,3 +1,10 @@
 {
-  "items": []
+  "items": [
+    {
+      "id": "bd4ed03b-1794-4f49-9fcb-238f57f78bef",
+      "body": "lorem ipsum dolor sit amet",
+      "isFinished": false,
+      "createdAt": 1726006873317
+    }
+  ]
 }
