@@ -85,7 +85,7 @@ app.patch("/api/:itemId", (req, res) => {
     }
 
     fs.writeFile("db.json", JSON.stringify(data, null, 2), () => {
-      res.send(`Item with ID ${itemId} updated sucessfully!`);
+      res.send(itemToUpdate);
       res.status(200).end();
     });
   } else {
