@@ -18,7 +18,7 @@ const app = express();
 const port = process.env.PORT || 9000;
 
 const corsOptions = {
-  origin: "*", // update to match the domain you will make the request from
+  origin: process.env.ORIGIN || "*",
   optionsSuccessStatus: 200,
 };
 
