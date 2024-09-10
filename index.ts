@@ -18,7 +18,7 @@ const app = express();
 const port = process.env.PORT || 9000;
 
 const corsOptions = {
-  origin: "*", // update to match the domain you will make the request from 
+  origin: process.env.ORIGIN || "*",
   optionsSuccessStatus: 200,
 };
 
@@ -28,6 +28,10 @@ app.use(cors(corsOptions));
 const readDataFromFile = fs.readFileSync("db.json");
 
 const data: IdataTypes = JSON.parse(readDataFromFile.toString());
+
+app.get("/", (_req, res) => {
+  res.send("Server is running");
+});
 
 app.get("/api", (_req, res) => {
   res.send(data);
@@ -81,7 +85,7 @@ app.patch("/api/:itemId", (req, res) => {
     }
 
     fs.writeFile("db.json", JSON.stringify(data, null, 2), () => {
-      res.send(`Item with ID ${itemId} updated sucessfully!`);
+      res.send(itemToUpdate);
       res.status(200).end();
     });
   } else {
