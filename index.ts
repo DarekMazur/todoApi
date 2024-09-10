@@ -54,6 +54,26 @@ app.delete("/api/:itemId", (req, res) => {
   }
 });
 
+app.patch("/api/:itemId", (req, res) => {
+  const itemId = req.params.itemId;
+  const itemToUpdate = data.items.find((item) => item.id === itemId);
+
+  if (itemToUpdate) {
+    if (req.body.body !== undefined) {
+      itemToUpdate.body = req.body.body;
+    }
+
+    if (req.body.isFinished !== undefined) {
+      itemToUpdate.isFinished = req.body.isFinished;
+    }
+    res.send(`Item with ID ${itemId} updated sucessfully!`);
+    res.status(200).end();
+  } else {
+    res.send(`Item with ID ${itemId} does not exist`);
+    res.status(404).end();
+  }
+});
+
 app.listen(port, () => {
   console.log(`server started on port ${port}`);
 });
