@@ -1,5 +1,6 @@
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
+import fs from "fs";
 
 interface IitemTypes {
   id: string;
@@ -12,14 +13,18 @@ interface IdataTypes {
   items: IitemTypes[];
 }
 
-const data: IdataTypes = {
-  items: [],
-};
+// const data: IdataTypes = {
+//   items: [],
+// };
 
 const app = express();
 const port = process.env.PORT || 9000;
 
 app.use(express.json());
+
+const readDataFromFile = fs.readFileSync("db.json");
+
+const data: IdataTypes = JSON.parse(readDataFromFile.toString());
 
 app.get("/api", (_req, res) => {
   res.send(data);
@@ -34,8 +39,11 @@ app.post("/api", (req, res) => {
   };
 
   data.items.push(item);
-  res.send(item);
-  res.status(200).end();
+
+  fs.writeFile("db.json", JSON.stringify(data, null, 2), () => {
+    res.send(item);
+    res.status(200).end();
+  });
 });
 
 app.delete("/api/:itemId", (req, res) => {
@@ -46,8 +54,10 @@ app.delete("/api/:itemId", (req, res) => {
 
     data.items = [...filteredItems];
 
-    res.send("item deleted");
-    res.status(200).end();
+    fs.writeFile("db.json", JSON.stringify(data, null, 2), () => {
+      res.send("item deleted");
+      res.status(200).end();
+    });
   } else {
     res.send(`Item with ID ${itemId} does not exist`);
     res.status(404).end();
@@ -66,8 +76,11 @@ app.patch("/api/:itemId", (req, res) => {
     if (req.body.isFinished !== undefined) {
       itemToUpdate.isFinished = req.body.isFinished;
     }
-    res.send(`Item with ID ${itemId} updated sucessfully!`);
-    res.status(200).end();
+
+    fs.writeFile("db.json", JSON.stringify(data, null, 2), () => {
+      res.send(`Item with ID ${itemId} updated sucessfully!`);
+      res.status(200).end();
+    });
   } else {
     res.send(`Item with ID ${itemId} does not exist`);
     res.status(404).end();
