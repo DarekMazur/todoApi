@@ -24,7 +24,7 @@ app.get("/api", (_req, res) => {
   res.send(data);
 });
 
-app.post("/api/post", (req, res) => {
+app.post("/api", (req, res) => {
   data.items.push(req.body);
   res.status(200).end();
 });
