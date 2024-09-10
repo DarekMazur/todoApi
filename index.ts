@@ -1,6 +1,7 @@
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
+import cors from "cors";
 
 interface IitemTypes {
   id: string;
@@ -13,14 +14,16 @@ interface IdataTypes {
   items: IitemTypes[];
 }
 
-// const data: IdataTypes = {
-//   items: [],
-// };
-
 const app = express();
 const port = process.env.PORT || 9000;
 
+const corsOptions = {
+  origin: "*", // update to match the domain you will make the request from 
+  optionsSuccessStatus: 200,
+};
+
 app.use(express.json());
+app.use(cors(corsOptions));
 
 const readDataFromFile = fs.readFileSync("db.json");
 
